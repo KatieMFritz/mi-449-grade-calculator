@@ -16,6 +16,7 @@ var x28Projects = document.getElementById('.28-point')
 var totalPointsDisplay = document.getElementById('total-points')
 var pointsStillNeededDisplay = document.getElementById('points-still-needed')
 
+var clearDataButton = document.getElementById('clear-data')
 
 // Set some dates
 var startDate = moment("2018-01-09")
@@ -73,7 +74,11 @@ var loadSaved = function() {
 
 // Clear data
 var clearData = function() {
-  localStorage.clear()
+  var confirm = window.confirm('Are you sure you want to remove your saved data?')
+  if (confirm) {
+    localStorage.clear()
+    location.reload()
+  }
 }
 
 // Set the target grade and other plan info
@@ -139,3 +144,4 @@ updateForm.addEventListener('click', getTargets)
 x09Projects.addEventListener('change', updateProjectMath)
 x19Projects.addEventListener('change', updateProjectMath)
 x28Projects.addEventListener('change', updateProjectMath)
+clearDataButton.addEventListener('click', clearData)
