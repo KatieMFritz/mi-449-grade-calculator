@@ -4,61 +4,81 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="icon" href="favicon.ico?v=1">
   <title>MI 449 grade calculator</title>
 </head>
-<body class="container">
+<body class="container pt-4">
   <h1>MI 449 grade calculator</h1>
-  <p>Work in progress! Might not be 100% accurate.</p>
+  <p class="text-danger">Work in progress! Might not be 100% accurate.</p>
 
-  <form>
-    <div class="row">
-
-      <div class="one-third column">
-        <label for="current-grade">Current grade</label>
-        <input type="number" id="current-grade" step="0.01" min="0" max="4.0">
-      </div>
-
-      <div class="one-third column">
-        <label for="date-target">Target date</label>
-        <input type="date" id="date-target" min="2018-01-09" max="2018-05-01" >
-      </div>
-
-      <div class="one-third column">
-        <input class="button-primary" type="button" value="Update" id="update-form">
-      </div>
+  <form class="bg-light p-3 mb-4 row align-items-center">
+    <h2 class="col-12">Start Here</h2>
+    <div class="form-group col-md">
+      <label for="current-grade">Current grade</label>
+      <input class="form-control" aria-describedby="currentGradeHelp" type="number" id="current-grade" step="0.01" min="0" max="4.0">
+      <small id="currentGradeHelp" class="form-text text-muted">What grade do you have right now?</small>
     </div>
-    
+
+    <div class="form-group col-md">
+      <label for="date-target">Target date</label>
+      <input class="form-control" aria-describedby="targetDateHelp" type="date" id="date-target" min="2018-01-09" max="2018-05-01">
+      <small id="targetDateHelp" class="form-text text-muted">By when would you like to be on track for a 4.0?</small>
+    </div>
+
+    <div class="col-md-2">
+      <button class="btn btn-primary mb-md-3" id="update-form">Update</button>
+      <button class="btn btn-outline-secondary btn-sm" type="button" id="clear-data">Clear Data</button>
+    </div>
   </form>
 
-  <div class="row">
-    <section class="one-half column">
-      <h2>Metrics</h2>
+
+  <div class="row mb-4">
+    <section class="col-md mb-3">
+      <h2>Dates</h2>
       <p><strong>Today's date: </strong><span id="date-today"></span></p>
+      <p><strong>Target date: </strong><span id="date-target-display"></span></p>
       <p><strong>Days remaining: </strong><span id="days-remaining"></span></p>
-      <p><strong>Target grade: </strong><span id="target-grade"></span></p>
+    </section>
+
+    <section class="col-md mb-3">
+      <h2>Points</h2>
+      <p><strong>Target grade by target date: </strong><span id="target-grade"></span></p>
       <p><strong>Points needed: </strong><span id="points-needed"></span></p>
-      <p><strong>Points per week: </strong><span id="points-per-week"></span></p>
-      <p><strong>Points per day: </strong><span id="points-per-day"></span></p>
+      <p><strong>Points needed per week: </strong><span id="points-per-week"></span></p>
+      <p><strong>Points needed per day: </strong><span id="points-per-day"></span></p>
     </section>
 
-    <section>
+    <section class="col-md-6 mb-3">
       <h2>Projects</h2>
-      <label>.09 point projects: <input type="number" id=".09-point" value="0" min="0" max="6"></label>
-      <label>.19 point projects: <input type="number" id=".19-point" value="0" min="0" max="10"></label>
-      <label>.28 point projects: <input type="number" id=".28-point" value="0" min="0" max="6"></label>
+      <p>How many projects do you plan to do worth:</p>
 
-      <p><strong>Grade once you complete these projects: </strong><span id="total-points"></span></p>
-      <p><strong>Points still needed to reach target grade: </strong><span id="points-still-needed"></span></p>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for=".09-point">.09 points</label>
+        </div>
+        <input class="form-control" type="number" id=".09-point" value="0" min="0" max="6">
+      </div>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for=".19-point">.19 points</label>
+        </div>
+        <input class="form-control" type="number" id=".19-point" value="0" min="0" max="6">
+      </div>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for=".28-point">.28 points</label>
+        </div>
+        <input class="form-control" type="number" id=".28-point" value="0" min="0" max="6">
+      </div>
+
+      <p>Once you complete those, your grade will be: <span class="font-weight-bold" id="new-grade"></span></p>
+      <p>You will still need <span class="font-weight-bold" id="points-still-needed"></span> points to reach your target grade.</p>
     </section>
-
   </div>
 
-  <button type="button" id="clear-data">Clear Data</button>
-
-  <footer>
-    <p>&copy; Katie Fritz, <a href="https://katiemfritz.com">Katie M Fritz, LLC</a></p>
+  <footer class="text-muted text-center">
+    <p>&copy; 2018 Katie Fritz, <a href="https://katiemfritz.com">Katie M Fritz, LLC</a></p>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>

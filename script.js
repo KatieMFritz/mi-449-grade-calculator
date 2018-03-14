@@ -1,9 +1,14 @@
+///////////////////////////////
+/* Global Variables */
+///////////////////////////////
+
 // Get elements from the page
 var currentGradeInput = document.getElementById('current-grade')
 var targetDateInput = document.getElementById('date-target')
 var updateForm = document.getElementById('update-form')
 
 var todayDateDisplay = document.getElementById('date-today')
+var targetDateDisplay = document.getElementById('date-target-display')
 var targetGradeDisplay = document.getElementById('target-grade')
 var daysRemainingDisplay = document.getElementById('days-remaining')
 var pointsNeededDisplay = document.getElementById('points-needed')
@@ -13,7 +18,7 @@ var pointsPerDayDisplay = document.getElementById('points-per-day')
 var x09Projects = document.getElementById('.09-point')
 var x19Projects = document.getElementById('.19-point')
 var x28Projects = document.getElementById('.28-point')
-var totalPointsDisplay = document.getElementById('total-points')
+var newGradeDisplay = document.getElementById('new-grade')
 var pointsStillNeededDisplay = document.getElementById('points-still-needed')
 
 var clearDataButton = document.getElementById('clear-data')
@@ -29,7 +34,11 @@ var pointsNeeded
 var targetDate
 var currentGrade
 
-var loadSaved = function() {
+////////////////////////////////////
+/* Functions */
+/////////////////////////////////////
+
+var initalize = function() {
     // If stored target date exists, use it
     var storedTargetDate = window.localStorage.getItem('storedTargetDate')
     if (storedTargetDate !== null) {
@@ -44,7 +53,7 @@ var loadSaved = function() {
     var storedGrade = window.localStorage.getItem('storedGrade')
     if (storedGrade !== null) {
       currentGrade = storedGrade
-      currentGradeInput.value = currentGrade
+      currentGradeInput.value = parseFloat(currentGrade)
     // Otherwise, use defaults
     } else {
       currentGradeInput.value = 0.0
@@ -72,15 +81,6 @@ var loadSaved = function() {
     }
 }
 
-// Clear data
-var clearData = function() {
-  var confirm = window.confirm('Are you sure you want to remove your saved data?')
-  if (confirm) {
-    localStorage.clear()
-    location.reload()
-  }
-}
-
 // Set the target grade and other plan info
 var getTargets = function() {
   // Get and save the target date
@@ -88,7 +88,7 @@ var getTargets = function() {
   window.localStorage.setItem('storedTargetDate', targetDate)
 
   // Get and save the current grade
-  currentGrade = currentGradeInput.value
+  currentGrade = parseFloat(currentGradeInput.value)
   window.localStorage.setItem('storedGrade', currentGrade)
 
   // Calculate the number of days into the course for the target date
@@ -103,10 +103,11 @@ var getTargets = function() {
   // Calculate and show days remaining
   var daysRemaining = Math.abs(targetDayNumber - todayNumber)
   todayDateDisplay.innerHTML = todayFormatted
+  targetDateDisplay.innerHTML = moment(targetDate).format('YYYY-MM-DD')
   daysRemainingDisplay.innerHTML = daysRemaining
 
   // Calculate and show points needed
-  pointsNeeded = Math.round ((targetGrade - currentGrade)*100) / 100
+  pointsNeeded = Math.round((targetGrade - currentGrade)*100) / 100
   pointsNeededDisplay.innerHTML = pointsNeeded
 
   // Calculate and show points needed per week
@@ -128,20 +129,42 @@ var updateProjectMath = function() {
     ((x09Projects.value * .09) + (x19Projects.value * .19) + (x28Projects.value * .28))
     * 100)
     /100
-  totalPointsDisplay.innerHTML = totalPoints
+  var newGrade = Math.round((currentGrade + totalPoints)*100)/100
+  if (newGrade > 4.0) {
+    newGrade = 4.0
+  }
+  newGradeDisplay.innerHTML = newGrade
   pointsStillNeededDisplay.innerHTML = Math.round((pointsNeeded - totalPoints)*100)/100
+
+  if (pointsNeeded > 0) {
+    pointsStillNeededDisplay.className += ' text-danger'
+  }
 
   window.localStorage.setItem('stored09', x09Projects.value)
   window.localStorage.setItem('stored19', x19Projects.value)
   window.localStorage.setItem('stored28', x28Projects.value)
 }
 
-// Set dates when the page loads
-window.onload = loadSaved()
+// Clear data
+var clearData = function() {
+  var confirm = window.confirm('Are you sure you want to remove your saved data?')
+  if (confirm) {
+    localStorage.clear()
+    location.reload()
+  }
+}
+
+///////////////////////////
+/* Event Listeners */
+///////////////////////////
+
+// Set initial values when the page loads
+window.onload = initalize()
 
 // Update when things change
 updateForm.addEventListener('click', getTargets)
+clearDataButton.addEventListener('click', clearData)
 x09Projects.addEventListener('change', updateProjectMath)
 x19Projects.addEventListener('change', updateProjectMath)
 x28Projects.addEventListener('change', updateProjectMath)
-clearDataButton.addEventListener('click', clearData)
+
