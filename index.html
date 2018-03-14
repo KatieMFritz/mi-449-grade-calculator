@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+  <link rel="stylesheet" href="style.css">
   <title>MI 449 grade calculator</title>
 </head>
 <body class="container">
   <h1>MI 449 grade calculator</h1>
-  <p>How many projects do you need to do to catch up?</p>
+  <p>Work in progress! Might not be 100% accurate.</p>
 
   <form>
     <div class="row">
@@ -27,11 +28,8 @@
       <div class="one-third column">
         <input class="button-primary" type="button" value="Update" id="update-form">
       </div>
-
     </div>
-
-
-
+    
   </form>
 
   <div class="row">
@@ -51,13 +49,17 @@
       <label>.19 point projects: <input type="number" id=".19-point" value="0" min="0" max="10"></label>
       <label>.28 point projects: <input type="number" id=".28-point" value="0" min="0" max="6"></label>
 
-      <p><strong>Total points: </strong><span id="total-points"></span></p>
-      <p><strong>Points still needed: </strong><span id="points-still-needed"></span></p>
+      <p><strong>Grade once you complete these projects: </strong><span id="total-points"></span></p>
+      <p><strong>Points still needed to reach target grade: </strong><span id="points-still-needed"></span></p>
     </section>
 
   </div>
 
   <button type="button" id="clear-data">Clear Data</button>
+
+  <footer>
+    <p>&copy; Katie Fritz, <a href="https://katiemfritz.com">Katie M Fritz, LLC</a></p>
+  </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
   <script src="script.js"></script>
