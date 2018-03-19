@@ -28,8 +28,7 @@ var endDate = moment("2018-05-01")
 var today = moment()
 var todayFormatted = moment().format('YYYY-MM-DD')
 
-// rounding utility
-var twoDecimals = function(unroundedValue) { return Math.round((unroundedValue)*100)/100 }
+
 // Other global variables
 var pointsNeeded
 var targetDate
