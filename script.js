@@ -6,6 +6,7 @@
 var currentGradeInput = document.getElementById('current-grade')
 var targetDateInput = document.getElementById('date-target')
 var updateForm = document.getElementById('update-form')
+var clearDataButton = document.getElementById('clear-data')
 
 var todayDateDisplay = document.getElementById('date-today')
 var targetDateDisplay = document.getElementById('date-target-display')
@@ -21,14 +22,14 @@ var x28Projects = document.getElementById('.28-point')
 var newGradeDisplay = document.getElementById('new-grade')
 var pointsStillNeededDisplay = document.getElementById('points-still-needed')
 
-var clearDataButton = document.getElementById('clear-data')
-
 // Set some dates
 var startDate = moment("2018-01-09")
 var endDate = moment("2018-05-01")
 var today = moment()
 var todayFormatted = moment().format('YYYY-MM-DD')
 
+// rounding utility
+var twoDecimals = function(unroundedValue) { return Math.round((unroundedValue)*100)/100 }
 // Other global variables
 var pointsNeeded
 var targetDate
@@ -73,7 +74,6 @@ var initalize = function() {
       x28Projects.value = stored28
     }
 
-
     // Run other display functions if there is stored data
     if ((storedGrade !== null) && (storedTargetDate !== null)) {
       getTargets()
@@ -97,8 +97,8 @@ var getTargets = function() {
 
   // Calculate and show the target grade
   var percentageThroughCourse = Math.abs(targetDayNumber / 112)
-  var targetGrade = Math.round(percentageThroughCourse * 400) / 100
-  targetGradeDisplay.innerHTML = targetGrade
+  var targetGrade = percentageThroughCourse * 4
+  targetGradeDisplay.innerHTML = targetGrade.toFixed(2)
 
   // Calculate and show days remaining
   var daysRemaining = Math.abs(targetDayNumber - todayNumber)
@@ -107,17 +107,17 @@ var getTargets = function() {
   daysRemainingDisplay.innerHTML = daysRemaining
 
   // Calculate and show points needed
-  pointsNeeded = Math.round((targetGrade - currentGrade)*100) / 100
-  pointsNeededDisplay.innerHTML = pointsNeeded
+  pointsNeeded = targetGrade - currentGrade
+  pointsNeededDisplay.innerHTML = pointsNeeded.toFixed(2)
 
   // Calculate and show points needed per week
   var weeksRemaining = Math.floor(daysRemaining / 7)
-  var pointsPerWeek = Math.round(pointsNeeded / weeksRemaining * 100) / 100
-  pointsPerWeekDisplay.innerHTML = pointsPerWeek
+  var pointsPerWeek = pointsNeeded / weeksRemaining
+  pointsPerWeekDisplay.innerHTML = pointsPerWeek.toFixed(2)
 
   // Calculate and show points needed per day
-  var pointsPerDay = Math.round(pointsNeeded / daysRemaining * 100) / 100
-  pointsPerDayDisplay.innerHTML = pointsPerDay
+  var pointsPerDay = pointsNeeded / daysRemaining
+  pointsPerDayDisplay.innerHTML = pointsPerDay.toFixed(2)
 
   // and also update project math when this changes
   updateProjectMath()
@@ -129,12 +129,12 @@ var updateProjectMath = function() {
     ((x09Projects.value * .09) + (x19Projects.value * .19) + (x28Projects.value * .28))
     * 100)
     /100
-  var newGrade = Math.round((currentGrade + totalPoints)*100)/100
+  var newGrade = currentGrade + totalPoints
   if (newGrade > 4.0) {
     newGrade = 4.0
   }
-  newGradeDisplay.innerHTML = newGrade
-  pointsStillNeededDisplay.innerHTML = Math.round((pointsNeeded - totalPoints)*100)/100
+  newGradeDisplay.innerHTML = newGrade.toFixed(2)
+  pointsStillNeededDisplay.innerHTML = (pointsNeeded - totalPoints).toFixed(2)
 
   if (pointsNeeded > 0) {
     pointsStillNeededDisplay.className += ' text-danger'
